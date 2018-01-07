@@ -101,7 +101,7 @@ download(){
       exit 1
   }
   ## First check if there's a newer version of this update script
-  7z -qp "$OutputFile" runtime/bin/update > "$TempDir/update" 2>/dev/null && {
+  7z x -so "$OutputFile" runtime/bin/update > "$TempDir/update" 2>/dev/null && {
     echo "Update script in .zip archive found, using that instead."
     chmod a+x "$TempDir/update"
     "$TempDir/update" "$OHVersion" "$(cd "$WorkingDir" && pwd -P)" "--skipnew"; exit 0
@@ -175,7 +175,7 @@ rm -rf "$WorkingDir/userdata/tmp"
 
 ## Unzip the downloaded folder into openHAB's directory WITHOUT replacing any existing files.
 echo "Updating openHAB..."
-7z -nq "$OutputFile" -d "$WorkingDir/" || {
+7z x  "$OutputFile" -d "$WorkingDir/" || {
   echo "Failed to unzip archive, restoring system files..." >&2
   ## An error has occured so try to restore openHAB to it's previous state.
   cp -a "$TempDir/runtime"        "$WorkingDir/runtime"
